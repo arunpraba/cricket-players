@@ -13,6 +13,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
+        id: 'players',
         element: <Players />,
         loader: async () => {
           try {

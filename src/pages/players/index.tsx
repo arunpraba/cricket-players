@@ -1,5 +1,3 @@
-import { useLoaderData } from 'react-router-dom'
-import { useCallback, useState } from 'react'
 import {
   Table,
   TableHeader,
@@ -7,8 +5,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Selection,
-  SortDescriptor,
 } from '@nextui-org/react'
 import { TColumnKey, TPlayer, TPlayerType } from '../../utils/api/types'
 import { getAgeFromDob } from '../../utils/formatter'
@@ -16,42 +12,27 @@ import { PLAYER_TYPES, columns } from './constants'
 
 import TopContent from './TopContent'
 import BottomContent from './BottomContent'
+import { useData } from '../../hooks'
 
 export default function Players() {
-  const [value, setValue] = useState('')
-  const [playersFilter, setPlayersFilter] = useState<Selection>('all')
-  const [page, setPage] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]))
-
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: 'age',
-    direction: 'ascending',
-  })
-  const players = useLoaderData() as TPlayer[]
-  const playersLength = players.length
-  const pages = Math.ceil(playersLength / rowsPerPage)
-
-  const onClear = useCallback(() => {
-    setValue('')
-  }, [])
-
-  const onSearchChange = useCallback((value: string) => {
-    setValue(value)
-  }, [])
-
-  const onPreviousPage = useCallback(() => {
-    setPage((prevPage) => (prevPage > 1 ? prevPage - 1 : prevPage))
-  }, [])
-
-  const onNextPage = useCallback(() => {
-    setPage((prevPage) => (prevPage < pages ? prevPage + 1 : prevPage))
-  }, [pages])
-
-  const onRowsPerPageChange = useCallback((pageValue: number) => {
-    setRowsPerPage(pageValue)
-    setPage(1)
-  }, [])
+  const {
+    playersLength,
+    pages,
+    value,
+    playersFilter,
+    setPlayersFilter,
+    page,
+    setPage,
+    sortDescriptor,
+    setSortDescriptor,
+    players,
+    onClear,
+    onSearchChange,
+    onPreviousPage,
+    onNextPage,
+    rowsPerPage,
+    onRowsPerPageChange,
+  } = useData()
 
   return (
     <>
@@ -65,12 +46,12 @@ export default function Players() {
             setPlayersFilter={setPlayersFilter}
             playersLength={playersLength}
             onRowsPerPageChange={onRowsPerPageChange}
+            rowsPerPage={rowsPerPage}
           />
         }
         topContentPlacement="outside"
         bottomContent={
           <BottomContent
-            selectedKeys={selectedKeys}
             page={page}
             pages={pages}
             playersLength={playersLength}
@@ -82,7 +63,7 @@ export default function Players() {
         bottomContentPlacement="outside"
         aria-label="Cricket Players list"
         isHeaderSticky
-        onSelectionChange={setSelectedKeys}
+        sortDescriptor={sortDescriptor}
         onSortChange={setSortDescriptor}
       >
         <TableHeader columns={columns}>

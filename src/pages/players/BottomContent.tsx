@@ -1,15 +1,12 @@
-import { Button, Pagination, Selection } from '@nextui-org/react'
+import { Button, Pagination } from '@nextui-org/react'
 
 export default function BottomContent({
-  selectedKeys,
   page,
   pages,
-  playersLength,
   setPage,
   onPreviousPage,
   onNextPage,
 }: {
-  selectedKeys: Selection
   page: number
   pages: number
   playersLength: number
@@ -19,11 +16,7 @@ export default function BottomContent({
 }) {
   return (
     <div className="py-2 px-2 flex justify-between items-center">
-      <span className="w-[30%] text-small text-default-400">
-        {selectedKeys === 'all'
-          ? 'All items selected'
-          : `${selectedKeys.size} of ${playersLength} selected`}
-      </span>
+      <span className="w-[30%] text-small text-default-400"></span>
       <Pagination
         isCompact
         showControls

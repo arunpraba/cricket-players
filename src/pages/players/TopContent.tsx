@@ -9,6 +9,7 @@ import {
 } from '@nextui-org/react'
 import { playerTypeOptions } from './constants'
 import { ChevronDownIcon } from '../../components/iconst'
+import { useMemo } from 'react'
 
 export default function TopContent({
   value,
@@ -18,8 +19,10 @@ export default function TopContent({
   setPlayersFilter,
   playersLength,
   onRowsPerPageChange,
+  rowsPerPage,
 }: {
   value: string
+  rowsPerPage: number
   onClear: () => void
   onSearchChange: (value: string) => void
   playersFilter: Selection
@@ -27,6 +30,12 @@ export default function TopContent({
   playersLength: number
   onRowsPerPageChange: (e: number) => void
 }) {
+  const playerLabel = useMemo(() => {
+    if (playersFilter === 'all') return 'all'
+    const length = [...playersFilter].length
+    return length === 4 ? 'all' : length
+  }, [playersFilter])
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between gap-3 items-end">
@@ -42,7 +51,7 @@ export default function TopContent({
           <Dropdown>
             <DropdownTrigger className="hidden sm:flex">
               <Button endContent={<ChevronDownIcon />} variant="flat">
-                Player Type
+                Player Type ({playerLabel})
               </Button>
             </DropdownTrigger>
             <DropdownMenu
@@ -53,9 +62,9 @@ export default function TopContent({
               selectionMode="multiple"
               onSelectionChange={setPlayersFilter}
             >
-              {playerTypeOptions.map((status) => (
-                <DropdownItem key={status.uid} className="capitalize">
-                  {status.name}
+              {playerTypeOptions.map((playerType) => (
+                <DropdownItem key={playerType.uid} className="capitalize">
+                  {playerType.name}
                 </DropdownItem>
               ))}
             </DropdownMenu>
@@ -70,6 +79,7 @@ export default function TopContent({
           Rows per page:
           <select
             className="bg-transparent outline-none text-default-400 text-small"
+            value={rowsPerPage}
             onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
           >
             <option value="5">5</option>
