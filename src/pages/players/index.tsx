@@ -6,12 +6,14 @@ import {
   TableRow,
   TableCell,
 } from '@nextui-org/react'
+import { Link } from 'react-router-dom'
+
 import { TColumnKey, TPlayer, TPlayerType } from '../../utils/api/types'
 import { getAgeFromDob } from '../../utils/formatter'
 import { PLAYER_TYPES, columns } from './constants'
 
-import TopContent from './TopContent'
-import BottomContent from './BottomContent'
+import TopContent from './components/TopContent'
+import BottomContent from './components/BottomContent'
 import { useData } from '../../hooks'
 
 export default function Players() {
@@ -92,6 +94,14 @@ export default function Players() {
 
                 if (key === 'dob') {
                   return <TableCell>{getAgeFromDob(value as number)}</TableCell>
+                }
+
+                if (key === 'name') {
+                  return (
+                    <TableCell>
+                      <Link to={`/${player.id}`}>{value}</Link>
+                    </TableCell>
+                  )
                 }
 
                 return <TableCell>{value}</TableCell>

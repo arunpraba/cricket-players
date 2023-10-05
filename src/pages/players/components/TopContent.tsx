@@ -7,8 +7,8 @@ import {
   DropdownItem,
   Selection,
 } from '@nextui-org/react'
-import { playerTypeOptions } from './constants'
-import { ChevronDownIcon } from '../../components/iconst'
+import { playerTypeOptions } from '../constants'
+import { ChevronDownIcon } from '../../../components/iconst'
 import { useMemo } from 'react'
 
 export default function TopContent({

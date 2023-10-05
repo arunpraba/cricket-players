@@ -20,4 +20,15 @@ const getPlayers = (args?: {
   )
 }
 
+export const getPlayer = (args?: { playerId: string }): Promise<TPlayer[]> => {
+  return Promise.resolve<TPlayer[]>(
+    (data as TPlayer[])
+      .filter((it) => it.id === args?.playerId)
+      .map((it, index) => ({
+        ...it,
+        rank: index + 1,
+      }))
+  )
+}
+
 export default getPlayers

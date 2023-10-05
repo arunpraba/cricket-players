@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import getPlayers from './utils/api/get-players'
+import getPlayers, { getPlayer } from './utils/api/get-players'
+import Loader from './components/loader'
 
 const Layout = React.lazy(() => import('./components/layout'))
 const Players = React.lazy(() => import('./pages/players'))
@@ -14,7 +15,11 @@ const router = createBrowserRouter([
       {
         path: '/',
         id: 'players',
-        element: <Players />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Players />
+          </Suspense>
+        ),
         loader: async () => {
           try {
             const players = await getPlayers()
@@ -26,7 +31,23 @@ const router = createBrowserRouter([
       },
       {
         path: '/:playerId',
-        element: <PlayerDetail />,
+        id: 'player-detail',
+        loader: async ({ params }) => {
+          try {
+            console.log({ params })
+            const { playerId } = params
+            if (!playerId) return null
+            const player = await getPlayer({ playerId })
+            return player
+          } catch {
+            return null
+          }
+        },
+        element: (
+          <Suspense fallback={<Loader />}>
+            <PlayerDetail />
+          </Suspense>
+        ),
       },
     ],
   },
