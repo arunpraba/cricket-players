@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 
 export default function Layout() {
   return (
@@ -8,7 +8,9 @@ export default function Layout() {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <p className="font-bold text-inherit">Cricket Players</p>
+                <p className="font-bold text-inherit">
+                  <Link to="/">Cricket Players</Link>
+                </p>
               </div>
             </div>
           </div>

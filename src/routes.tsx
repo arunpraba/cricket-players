@@ -34,13 +34,13 @@ const router = createBrowserRouter([
         id: 'player-detail',
         loader: async ({ params }) => {
           try {
-            console.log({ params })
             const { playerId } = params
             if (!playerId) return null
             const player = await getPlayer({ playerId })
-            return player
+            const players = await getPlayers({ type: player?.type })
+            return { player, players: players }
           } catch {
-            return null
+            return { player: null, players: [] }
           }
         },
         element: (
