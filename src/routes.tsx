@@ -1,5 +1,6 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import getPlayers from './utils/api/get-players'
 
 const Layout = React.lazy(() => import('./componets/layout'))
 const Players = React.lazy(() => import('./pages/players'))
@@ -13,6 +14,14 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Players />,
+        loader: async () => {
+          try {
+            const players = await getPlayers()
+            return players
+          } catch {
+            return []
+          }
+        },
       },
       {
         path: '/:playerId',

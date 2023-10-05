@@ -11,3 +11,5 @@ export type TPlayer = {
   rank?: TMayBe<number>
   dob?: TMayBe<number>
 }
+
+export type TColumnKey = keyof TPlayer
